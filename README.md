@@ -1,4 +1,4 @@
 dpkg-without-dependencies
 =========================
 
-This ruby script removes dependencies from all installed packages.
+This ruby script removes dependencies from list of all installed packages.
