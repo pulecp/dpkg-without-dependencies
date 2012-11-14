@@ -12,9 +12,9 @@ Before you run ruby script, you have to make file with packages. One package at 
 
 ## Run ruby script
 
-Script writes in standard output packages which are not dependent on others. File `filename` contains packages line by line.
+Script writes in file `filename_out` packages which are not dependent on others. File `filename_in` contains packages you want to solve line by line.
 
-    ruby dpkg-without-dependencies.rb <filename>
+    ruby dpkg-without-dependencies.rb <filename_in> <filename_out>
 
 ### Bugs
 

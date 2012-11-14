@@ -34,9 +34,11 @@ def leaves(filename)
   file = File.new( filename, "r" )
 
   begin
+    counter = 0
     while package = file.gets
       all_dependencies.merge(find_dependence(package.chomp))
-      packages_input.add(package)    
+      packages_input.add(package)
+      STDOUT.write "\r#{counter += 1}"
     end
   ensure
     file.close
@@ -47,8 +49,8 @@ end
 
 # main
 
-if ARGV.length != 1
-  warn "Bad number of parameters!!!\n\nUsing: ruby dpkg-without-dependencies.rb file_name"
+if ARGV.length != 2
+  warn "Bad number of parameters!!!\n\nUsing: ruby dpkg-without-dependencies.rb file_name_input file_name_output"
   exit 1
 end
 
@@ -57,6 +59,11 @@ end
 result, packages_input = leaves(ARGV[0])
 
 # output
-(packages_input - result).each do |i|
-  p i.chomp
+begin
+  file_out = File.new (ARGV[1], "w")
+  (packages_input - result).each do |i|
+    file_out.puts i.chomp
+  end
+ensure
+  file_out.close
 end
