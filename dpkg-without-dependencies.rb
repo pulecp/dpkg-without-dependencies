@@ -2,14 +2,12 @@
 
 require 'set'
 
-#return set of dependencies from string with output from "apt-cache rdepends <package>"
+# return set of dependencies from string with output from "apt-cache rdepends <package>"
 def find_dependence(package)
   dependencies = Set.new
   package_name_found = false
   
   dependence = `apt-rdepends #{package} 2>/dev/null`
-  
-  #p "dependence #{dependence}"
   
   dependence.each_line do |i|
     if package_name_found
@@ -29,30 +27,36 @@ def find_dependence(package)
   return dependencies
 end
 
-#return leaves from tree of dependences
+# return leaves from tree of dependences
 def leaves(filename)
   all_dependencies = Set.new
+  packages_input = Set.new
   file = File.new( filename, "r" )
 
   begin
     while package = file.gets
-          all_dependencies.merge(find_dependence(package.chomp))
+      all_dependencies.merge(find_dependence(package.chomp))
+      packages_input.add(package)    
     end
   ensure
     file.close
   end
 
-  return all_dependencies
+  return all_dependencies, packages_input
 end
 
+# main
+
 if ARGV.length != 1
-  p "Using: ruby dpkg-without-dependencies.rb file_name"
+  warn "Bad number of parameters!!!\n\nUsing: ruby dpkg-without-dependencies.rb file_name"
   exit 1
 end
 
-#run function and print result
+# result - set of all dependent packages on packages from set 'package_input'
+# package_input - packages from file passed on as input parametr ARGV[0]
+result, packages_input = leaves(ARGV[0])
 
-result = leaves(ARGV[0])
-result.each do |i|
-  p i
+# output
+(packages_input - result).each do |i|
+  p i.chomp
 end
