@@ -10,6 +10,10 @@ Before you run ruby script, you have to make file with packages. One package at 
 
     dpkg -l | sed -n '6,$s/....\([^ ]*\).*/\1/p' > filename
 
+Ruby script using package `apt-rdepends`
+
+    apt-get install apt-rdepends
+
 ## Run ruby script
 
 Script writes in file `filename_out` packages which are not dependent on others. File `filename_in` contains packages you want to solve line by line.
