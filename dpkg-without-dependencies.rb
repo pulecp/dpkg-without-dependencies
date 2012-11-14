@@ -26,23 +26,27 @@ end
 
 # return leaves from tree of dependences
 def leaves(filename)
-  all_dependencies = Set.new
+  dependencies = Set.new
   packages_input = Set.new
   file = File.new( filename, "r" )
 
   begin
     counter = 0
     while package = file.gets
-      all_dependencies.merge(find_dependence(package.chomp))
       packages_input.add(package.chomp)
+    end
+
+    packages_input.each do |package|
+      packages_input -= find_dependence(package.chomp)
       STDOUT.write "\r#{counter += 1}"
     end
     puts
+
   ensure
     file.close
   end
 
-  return all_dependencies, packages_input
+  return packages_input
 end
 
 # main
@@ -52,14 +56,13 @@ if ARGV.length != 2
   exit 1
 end
 
-# result - set of all dependent packages on packages from set 'package_input'
-# package_input - packages from file passed on as input parametr ARGV[0]
-result, packages_input = leaves(ARGV[0])
+# run method result
+result = leaves(ARGV[0])
 
 # output
 begin
   file_out = File.new( ARGV[1], "w")
-  (packages_input - result).each do |i|
+  result.each do |i|
     file_out.puts i.chomp
   end
 ensure
