@@ -8,13 +8,13 @@ This ruby script removes dependencies from list of all installed packages. When 
 
 Before you run ruby script, you have to make file with packages. One package at line. You can use this command:
 
-    dpkg -l | sed -n '6,$s/....\([^ ]*\).*/\1/p' > <filename>
+    dpkg -l | sed -n '6,$s/....\([^ ]*\).*/\1/p' > filename
 
 ## Run ruby script
 
 Script writes in file `filename_out` packages which are not dependent on others. File `filename_in` contains packages you want to solve line by line.
 
-    ruby dpkg-without-dependencies.rb <filename_in> <filename_out>
+    ruby dpkg-without-dependencies.rb filename_in filename_out
 
 ### Bugs
 
