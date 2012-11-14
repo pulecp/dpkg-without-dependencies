@@ -12,11 +12,8 @@ def find_dependence(package)
   dependence.each_line do |i|
     if package_name_found
       i.sub!(/  Depends: /,"")
-      #p "1 ", i
       i.sub!(/  PreDepends: /,"")
-      #p "2 ", i
       i.sub!(/\(.*/,"")
-      #p "3 ", i
       dependencies.add(i.strip.chomp)
     end
 
@@ -40,6 +37,7 @@ def leaves(filename)
       packages_input.add(package)
       STDOUT.write "\r#{counter += 1}"
     end
+    puts
   ensure
     file.close
   end
@@ -60,10 +58,11 @@ result, packages_input = leaves(ARGV[0])
 
 # output
 begin
-  file_out = File.new (ARGV[1], "w")
+  file_out = File.new( ARGV[1], "w")
   (packages_input - result).each do |i|
     file_out.puts i.chomp
   end
 ensure
   file_out.close
 end
+puts "Done"
