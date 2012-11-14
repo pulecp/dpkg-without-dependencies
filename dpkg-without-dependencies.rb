@@ -34,7 +34,7 @@ def leaves(filename)
     counter = 0
     while package = file.gets
       all_dependencies.merge(find_dependence(package.chomp))
-      packages_input.add(package)
+      packages_input.add(package.chomp)
       STDOUT.write "\r#{counter += 1}"
     end
     puts
